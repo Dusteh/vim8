@@ -47,7 +47,7 @@ RUN apt-get update && apt-get install -y \
         checkinstall \
         xorg \
         libxt-dev \
-        libgtk2.0-dev \
+        papirus-icon-theme \
         git
 
 RUN mkdir -p /tmp/build && \
@@ -67,11 +67,16 @@ RUN mkdir -p /tmp/build && \
     make && \
     checkinstall
 
+RUN apt-get remove --purge -y \
+        xorg \
+        gnome-devel \
+        xterm \
+        libncurses5-dev \ 
+        libxt-dev 
+
 RUN mkdir -p $HOME/fonts
 COPY fonts $HOME/fonts
 RUN $HOME/fonts/install.sh
-
-COPY icons /usr/share/icons
 
 USER $USER
 
