@@ -20,7 +20,11 @@ GID_VAR=""
 if test $GROUP_NAME == ""; then
     GID_VAR=1000
 else 
-    GID_VAR=$(getent group $GROUP_NAME | awk -F: '{printf "%d\n", $3}')
+    if test $OS == "LINUX"; then
+        GID_VAR=$(getent group $GROUP_NAME | awk -F: '{printf "%d\n", $3}')
+    else
+        GID_VAR=$(dscl . -read /Groups/$GROUP_NAME | awk '($1 == "PrimaryGroupID:") { print $2 }')
+    fi
 fi
 
 echo "Running with" $USER_VAR $UID_VAR $GID_VAR

@@ -11,7 +11,7 @@ ENV HOME /home/$USER
 ENV UID $UID
 ENV GID $GID
 
-RUN groupadd --gid $GID $USER
+RUN groupadd --gid $GID $USER || echo "Group ID exists"
 
 RUN useradd --create-home --home-dir $HOME \
         --gid $GID \
